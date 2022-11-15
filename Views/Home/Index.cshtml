@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="d-flex justify-content-center" style="">
+    <form class=" card">
+        <div class="card-header">
+            <legend class="text-center">Verificar Datos</legend>
+        </div>
+        
+
+        <div class=" card-body" style="max-width: 540px;">
+            <div class="mb-3">
+                <label for="disabledTextInput" class="font-weight-bolder" >Certificado (.cer)</label>
+                <input type="file" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+            </div>
+
+            <div class="mb-3">
+                <label for="disabledTextInput" class="font-weight-bolder">Clave primaria (.key)</label>
+                <input type="file" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+            </div>
+
+            <div class="mb-3">
+                <label for="disabledTextInput" class="font-weight-bolder">Contraseña</label>
+                <input type="password" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Verificar</button>
+            </div>
+            
+        </div>
+        
+    </form>
+</div>
