@@ -3,6 +3,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using Org.BouncyCastle.Bcpg;
+using FirmarDocumentos.Models;
 
 namespace FirmarDocumentos.Controllers
 {
@@ -15,7 +16,7 @@ namespace FirmarDocumentos.Controllers
             return View();
         }
 
-        public IActionResult ModificarPdf()
+        public IActionResult ModificarPdf(DocumentoFirmarViewModel docFirmar)
         {
             PdfReader read = new PdfReader(pathOldFile);
             Rectangle size = read.GetPageSizeWithRotation(1);
