@@ -1,4 +1,6 @@
 ﻿using iTextSharp.text.io;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -6,7 +8,6 @@ namespace FirmarDocumentos.Models
 {
     public class DocumentoFirmarViewModel
     {
-        [Required]
-        public HttpPostedFileBase DocumentoPdf { get; set; }
+        public IFormFile MyProperty { get; set; }
     }
 }

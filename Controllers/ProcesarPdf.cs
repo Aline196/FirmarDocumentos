@@ -16,30 +16,30 @@ namespace FirmarDocumentos.Controllers
             return View();
         }
 
-        public IActionResult ModificarPdf(DocumentoFirmarViewModel docFirmar)
+        public IActionResult ModificarPdf()
         {
-            PdfReader read = new PdfReader(pathOldFile);
-            Rectangle size = read.GetPageSizeWithRotation(1);
-            Document document= new Document(size);
+            //PdfReader read = new PdfReader(pathOldFile);
+            //Rectangle size = read.GetPageSizeWithRotation(1);
+            //Document document= new Document(size);
 
-            FileStream archivo = new FileStream(pathNewFile, FileMode.Create, FileAccess.Write);
-            PdfWriter write = PdfWriter.GetInstance(document, archivo);
-            document.Open();
+            //FileStream archivo = new FileStream(pathNewFile, FileMode.Create, FileAccess.Write);
+            //PdfWriter write = PdfWriter.GetInstance(document, archivo);
+            //document.Open();
 
-            PdfContentByte modificado = write.DirectContent;
-            modificado.BeginText();
-            //Agregar los datos que se optienen de el certificado en una variable text
+            //PdfContentByte modificado = write.DirectContent;
+            //modificado.BeginText();
+            ////Agregar los datos que se optienen de el certificado en una variable text
 
-            modificado.ShowTextAligned(1, text, 30, size.Height, 0);
-            modificado.EndText();
+            //modificado.ShowTextAligned(1, text, 30, size.Height, 0);
+            //modificado.EndText();
 
-            PdfImportedPage pagina = write.GetImportedPage(read, 1);
-            modificado.AddTemplate(pagina, 0, 0);
+            //PdfImportedPage pagina = write.GetImportedPage(read, 1);
+            //modificado.AddTemplate(pagina, 0, 0);
             
-            document.Close();
-            archivo.Close();
-            write.Close();
-            read.Close();
+            //document.Close();
+            //archivo.Close();
+            //write.Close();
+            //read.Close();
 
 
 

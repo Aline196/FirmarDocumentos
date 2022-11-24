@@ -1,13 +1,54 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace FirmarDocumentos.Controllers
 {
     public class FirmaElectonicaController : Controller
     {
+        private readonly IHostingEnvironment environment;
+
+        public FirmaElectonicaController(IHostingEnvironment environment)
+        {
+            this.environment = environment;
+        }
+
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarArchivo(IFormFile archivo)
+        {
+
+            string wwwPath = environment.WebRootPath;
+            string contentPath = environment.ContentRootPath;
+
+            string path = Path.Combine(environment.WebRootPath, "Archivos");
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+
+            string fileName = Path.GetFileName(archivo.FileName);
+            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+            {
+                await archivo.CopyToAsync(stream);
+
+                ViewBag.Message += string.Format("<b>{0}</b> Archivo subido.<br />", fileName);
+            }
+           
+
+
             return View();
         }
 
