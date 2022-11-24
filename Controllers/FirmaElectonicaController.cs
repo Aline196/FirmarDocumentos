@@ -24,32 +24,32 @@ namespace FirmarDocumentos.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult> GuardarArchivo(IFormFile archivo)
         {
 
-            string wwwPath = environment.WebRootPath;
+            string wwwPath = environment.WebRootPath; //ruta de la carpeta wwroot
             string contentPath = environment.ContentRootPath;
 
-            string path = Path.Combine(environment.WebRootPath, "Archivos");
+            string path = Path.Combine(environment.WebRootPath, "Archivos"); //mezcla de la ruta de la carpeta y el nombre del archivo
 
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(path)) //Creacion del directorio
             {
                 Directory.CreateDirectory(path);
             }
 
 
-            string fileName = Path.GetFileName(archivo.FileName);
-            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+            string fileName = Path.GetFileName(archivo.FileName); //se crea el nombre del archivo
+            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create)) 
             {
                 await archivo.CopyToAsync(stream);
 
                 ViewBag.Message += string.Format("<b>{0}</b> Archivo subido.<br />", fileName);
             }
            
-
-
-            return View();
+            return View("Views/Home/Index.cshtml");
         }
 
         public string[] ObtenerInformacionCertificado(byte[] certificadoEnByte)
