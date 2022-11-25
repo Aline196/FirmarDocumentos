@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace FirmarDocumentos.Services
 {
+    //Servicio:Logica de negocio
     public class ProcesarPDFService : IProcesarPDFService
     {
         private readonly IHostingEnvironment environment;
@@ -15,17 +16,18 @@ namespace FirmarDocumentos.Services
             this.environment = environment;
         }
 
+        //Metodo para guardar el pdf
         public async Task GuardarArchivoAsync(IFormFile archivo)
         {
-            string path = Path.Combine(environment.WebRootPath, "Archivos"); //mezcla de la ruta de la carpeta y el nombre del archivo
+            string path = Path.Combine(environment.WebRootPath, "Archivos"); 
 
-            if (!Directory.Exists(path)) //Creacion del directorio
+            if (!Directory.Exists(path)) 
             {
                 Directory.CreateDirectory(path);
             }
 
 
-            string fileName = Path.GetFileName(archivo.FileName); //se crea el nombre del archivo
+            string fileName = Path.GetFileName(archivo.FileName); 
             using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
             {
                 await archivo.CopyToAsync(stream);

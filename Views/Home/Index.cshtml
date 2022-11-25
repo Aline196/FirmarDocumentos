@@ -2,35 +2,63 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<div class="d-flex justify-content-center" style="">
-    <form class=" card">
+@*<div class="d-flex justify-content-center" style="">
+    <form class=" card" method="post" enctype="multipart/form-data" asp-controller="FirmaElectronica" asp-action="GuardarCertificados">
         <div class="card-header">
-            <legend class="text-center">Verificar Datos</legend>
+            <legend class="text-center">Ingresar Datos</legend>
         </div>
         
-
         <div class=" card-body" style="max-width: 540px;">
             <div class="mb-3">
                 <label for="disabledTextInput" class="font-weight-bolder" >Certificado (.cer)</label>
-                <input type="file" accept=".cer" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+                <input type="file" name="certificado" accept=".cer" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
             </div>
 
             <div class="mb-3">
                 <label for="disabledTextInput" class="font-weight-bolder">Clave primaria (.key)</label>
-                <input type="file" accept=".key" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+                <input type="file" name="clavePrivada" accept=".key" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
             </div>
 
-            <div class="mb-3">
+            @*<div class="mb-3">
                 <label for="disabledTextInput" class="font-weight-bolder">Contraseña</label>
                 <input type="password" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
-            </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            </div>*@
+           @* <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button type="submit" class="btn btn-primary">Verificar</button>
             </div>
             
         </div>
         
     </form>
+</div>*@
+
+<div class="d-flex justify-content-center" style="">
+
+        <div class="card-body" style="align-items:self-end">
+            <form class=" card" method="post" enctype="multipart/form-data" asp-controller="FirmaElectronica" asp-action="GuardarCertificados">
+                <div class="mb-3">
+                    <label for="disabledTextInput" class="font-weight-bolder">Certificado (.cer)</label>
+                    <input type="file" name="certificado" accept=".cer" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+                </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Verificar</button>
+            </div>
+            </form>
+        </div>
+
+
+        <div class="card-body" style="align-items: self-start">
+            <form class=" card" method="post" enctype="multipart/form-data" asp-controller="FirmaElectronica" asp-action="GuardarclavePrivada">
+                <div class="mb-3">
+                    <label for="disabledTextInput" class="font-weight-bolder">Clave primaria (.key)</label>
+                    <input type="file" name="clavePrivada" accept=".key" id="disabledTextInput" class="form-control-file" placeholder="Disabled input">
+                </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Verificar</button>
+            </div>
+            </form>
+        </div>
+
 </div>
 
 
