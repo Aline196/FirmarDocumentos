@@ -1,4 +1,5 @@
 ﻿
+using FirmarDocumentos.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace FirmarDocumentos.Controllers
     public class FirmaElectonicaController : Controller
     {
         private readonly IHostingEnvironment environment;
+        private readonly IProcesarPDFService procesarPDFService;
 
-        public FirmaElectonicaController(IHostingEnvironment environment)
+        public FirmaElectonicaController(IHostingEnvironment environment, IProcesarPDFService procesarPDFService)
         {
             this.environment = environment;
+            this.procesarPDFService = procesarPDFService;
         }
 
         public IActionResult Index()
@@ -27,30 +30,12 @@ namespace FirmarDocumentos.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> GuardarArchivo(IFormFile archivo)
+        public async Task GuardarArchivo(IFormFile archivo)
         {
-
-            string wwwPath = environment.WebRootPath; //ruta de la carpeta wwroot
-            string contentPath = environment.ContentRootPath;
-
-            string path = Path.Combine(environment.WebRootPath, "Archivos"); //mezcla de la ruta de la carpeta y el nombre del archivo
-
-            if (!Directory.Exists(path)) //Creacion del directorio
-            {
-                Directory.CreateDirectory(path);
-            }
-
-
-            string fileName = Path.GetFileName(archivo.FileName); //se crea el nombre del archivo
-            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create)) 
-            {
-                await archivo.CopyToAsync(stream);
-
-                ViewBag.Message += string.Format("<b>{0}</b> Archivo subido.<br />", fileName);
-            }
-           
-            return View("Views/Home/Index.cshtml");
+           await procesarPDFService.GuardarArchivoAsync(archivo);
         }
+
+
 
         public string[] ObtenerInformacionCertificado(byte[] certificadoEnByte)
         {
@@ -66,7 +51,7 @@ namespace FirmarDocumentos.Controllers
                 certEmisor.GetName(), // nombre del propietario de certificado concatenado con rfc, correo, serie etc
                 certEmisor.GetIssuerName(),  // nombre quien emitio el certificado    
                 certEmisor.Subject, // obtine el nombre destino del propietarios de certificado    
-                "" // aqui hira el rfc
+                "" // aqui ira el rfc
 
             };
 
