@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Archivos\" />
+    <Folder Include="wwwroot\Credenciales\" />
   </ItemGroup>
 
 </Project>

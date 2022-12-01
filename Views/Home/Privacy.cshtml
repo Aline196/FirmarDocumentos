@@ -5,7 +5,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="d-flex justify-content-center">
-    <form class="card" method="post" enctype="multipart/form-data" asp-controller="FirmaElectronica" asp-action="GuardarArchivo">
+    <form class="card shadow-lg" method="post" enctype="multipart/form-data" asp-controller="FirmaElectronica" asp-action="GuardarArchivo">
         
 
         <div class="card-body">
@@ -15,11 +15,22 @@
                 <input type="file" accept=".pdf" name="archivo" id="disabledTextInput" class="form-control-file" value="Upload" placeholder="Disabled input">
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-primary">Firmar </button>
+            <div class="flex-md-grow-1 d-md-inline-block justify-content-center">
+                <button type="submit" class="btn btn-primary">Guardar </button>
             </div>
             
+            
+           
+           
+
         </div>
        
     </form>
+    <form class="card">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary">Firmar </button>
+        </div>
+
+    </form>
+    
 </div>
