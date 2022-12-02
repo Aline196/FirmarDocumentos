@@ -16,7 +16,8 @@ namespace FirmarDocumentos.Services
     public class ProcesarPDFService : IProcesarPDFService
     {
         private readonly IHostingEnvironment environment;
-        string path;
+
+        private string path = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Cuarto Acuerdo.pdf";
 
         public ProcesarPDFService(IHostingEnvironment environment)
         {
@@ -47,10 +48,10 @@ namespace FirmarDocumentos.Services
        
 
 
-        public IActionResult ModificarPdf(ref string path)
+        public async Task ModificarPdf()
         {
             //string pathOldFile = Path; //Si se ingresa el archivo no debo de almacenar la ruta, lo que debo de pasar es el archivo directo
-            string pathNewFile = @"C:\Users\megonzalez\Documents\Desarollo SAT";
+            string pathNewFile = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Cuarto AcuerdoModificado.pdf";
             string pathOldFile = path;
 
             PdfReader read = new PdfReader(pathOldFile); //Lee el pdf original
@@ -58,17 +59,24 @@ namespace FirmarDocumentos.Services
             Document document = new Document(size);//documento de itextsharp para realizar el trabajo asignandole el tamaño del original
 
             // Creamos el objeto en el cual haremos la inserción
-            FileStream archivo = new FileStream(pathNewFile, FileMode.Create, FileAccess.Write);
+            FileStream archivo = new FileStream(pathNewFile, FileMode.Create, FileAccess.ReadWrite);
             PdfWriter write = PdfWriter.GetInstance(document, archivo);
+
             document.Open();
+
+            
 
             //El contenido del pdf, aqui se hace la escritura del contenido
             PdfContentByte modificado = write.DirectContent;
 
+            //crea una nueva pagina y agrega el pdf original
+            PdfImportedPage nuevaPagina = write.GetImportedPage(read, 1);
+            modificado.AddTemplate(nuevaPagina, 0, 0);
+
             //Propiedades de nuestra fuente a insertar
-            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             modificado.SetColorFill(BaseColor.RED);
-            modificado.SetFontAndSize(bf, 8);
+            modificado.SetFontAndSize(bf, 15);
 
             //Se abre el flujo para escribir el texto
             modificado.BeginText();
@@ -78,21 +86,16 @@ namespace FirmarDocumentos.Services
 
             // Le damos posición y rotación al texto
             // la posición de Y es al revés de como estamos acostumbrados
-            modificado.ShowTextAligned(1, text, 30, size.Height, 0);
+            modificado.ShowTextAligned(1, text, 30, size.Height-30, 0);
             modificado.EndText();
 
-            //crea una nueva pagina y agrega el pdf original
-            PdfImportedPage pagina = write.GetImportedPage(read, 1);
-            modificado.AddTemplate(pagina, 0, 0);
+            
 
             document.Close();
             archivo.Close();
             write.Close();
             read.Close();
 
-
-
-            return null;
         }
 
 

@@ -51,8 +51,11 @@ namespace FirmarDocumentos.Controllers //Controlador que manejara la entrada de 
             await procesarCredenciales.GuardarclavePrivadaAsync(clavePrivada);
         }
 
-
-
+        public async Task ModificarPdf()
+        {
+            await procesarPDFService.ModificarPdf();
+        }
+        
 
        
     }
