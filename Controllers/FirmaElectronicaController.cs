@@ -67,7 +67,8 @@ namespace FirmarDocumentos.Controllers //Controlador que manejara la entrada de 
             //var rutaPdf = datosUsuario.RutaPdf;
 
 
-            var rutaCertificado = @"E:\Documents\Documentos personales\FIEL_SAGA990406LI5_20221107122530\saga990406li5.cer";
+            //var rutaCertificado = @"E:\Documents\Documentos personales\FIEL_SAGA990406LI5_20221107122530\saga990406li5.cer";
+            var rutaCertificado = @"C:\Users\megonzalez\Documents\Desarollo SAT\2 FIEL_GUPH751126M88_20220301120726\2 FIEL_GUPH751126M88_20220301120726\guph751126m88.cer";
             var informacionCertificado = _procesarCredenciales.ObtenerInformacionCertificado(rutaCertificado);
             await _procesarPDFService.ModificarPdf(informacionCertificado);
         }

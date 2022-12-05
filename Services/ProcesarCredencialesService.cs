@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using iText.Kernel.Geom;
+using iText.Signatures;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Crypto.Tls;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 
 namespace FirmarDocumentos.Services
 {
@@ -52,11 +56,20 @@ namespace FirmarDocumentos.Services
            
             string[] datosCertificado =
             {
-                certEmisor.GetExpirationDateString(), //fecha
+                //certEmisor.GetExpirationDateString(), //fecha
+                //certEmisor.GetSerialNumberString(), // serial
+                //certEmisor.GetPublicKeyString(), // clave publica
+                //certEmisor.GetName(), // nombre del propietario de certificado concatenado con rfc, correo, serie etc
+                //certEmisor.GetIssuerName(),  // nombre quien emitio el certificado    
+                //certEmisor.Subject, // obtine el nombre destino del propietarios de certificado    
+                //"" // aqui ira el rfc
+
+
+                
+                
+                certEmisor.GetIssuerName(),
                 certEmisor.GetSerialNumberString(), // serial
-                certEmisor.GetPublicKeyString(), // clave publica
-                certEmisor.GetName(), // nombre del propietario de certificado concatenado con rfc, correo, serie etc
-                certEmisor.GetIssuerName(),  // nombre quien emitio el certificado    
+                certEmisor.GetName(), // nombre del propietario de certificado concatenado con rfc, correo, serie etc   
                 certEmisor.Subject, // obtine el nombre destino del propietarios de certificado    
                 "" // aqui ira el rfc
 
@@ -81,15 +94,15 @@ namespace FirmarDocumentos.Services
 
             bool rfcEncontrado = false, nombreEncontrado = false;
 
-            foreach (string resultado in Regex.Split(datosCertificado[5], patrones)) // certificado[5] son los datos del nombre
+            foreach (string resultado in Regex.Split(datosCertificado[2], patrones)) // certificado[5] son los datos del nombre
             {
                 if (rfcEncontrado)
-                    datosCertificado[6] = resultado;
+                    datosCertificado[3] = resultado;
 
                 rfcEncontrado = false;
 
                 if (nombreEncontrado)
-                    datosCertificado[5] = resultado;
+                    datosCertificado[2] = resultado;
 
                 nombreEncontrado = false;
 
@@ -105,9 +118,6 @@ namespace FirmarDocumentos.Services
 
 
         }
-
-
-
 
 
         //Metodo para guardar la CLAVE PRIVADA
@@ -130,7 +140,17 @@ namespace FirmarDocumentos.Services
         }
 
 
+        public async Task CrearFirmaElectronica()
+        {
+            //PdfSigner firma = new PdfSigner();
 
+            //PdfSignatureAppearance appearance = signer.GetSignatureAppearance();
+            //appearance.SetReason("My reason to sign...")
+            //    .SetLocation("Lahore")
+            //    .SetPageRect(new Rectangle(36, 648, 200, 100))
+            //    .SetPageNumber(1);
+            //signer.SetFieldName("MyFieldName");
+        }
 
 
     }
