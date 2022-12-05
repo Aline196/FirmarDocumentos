@@ -7,7 +7,7 @@ namespace FirmarDocumentos.Services
     {
 
         Task GuardarArchivoAsync(IFormFile file);
-        Task ModificarPdf();
+        Task ModificarPdf(string[] informacionCertificado);
 
 
     }

@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace FirmarDocumentos.Services
 {
-    public class ProcesarCredencialesService : IProcesarCredenciales
+    public class ProcesarCredencialesService : IProcesarCredencialesService
     {
 
-        private readonly IHostingEnvironment environment;
+        private readonly IHostingEnvironment _environment;
 
         public ProcesarCredencialesService(IHostingEnvironment environment)
         {
-            this.environment = environment;
+            this._environment = environment;
         }
 
         //Metodo para recibir el Certificado
         public async Task GuardarCertificadosAsync(IFormFile certificado)
         {
-            string path = Path.Combine(environment.WebRootPath, "Credenciales");
+            string path = Path.Combine(_environment.WebRootPath, "Credenciales");
 
             if (!Directory.Exists(path))
             {
@@ -39,12 +39,17 @@ namespace FirmarDocumentos.Services
 
 
         //Metodo para obtener los datos del certificado Ingresado
-        public string[] ObtenerInformacionCertificado(ref byte[] certificado)
+        public string[] ObtenerInformacionCertificado(string rutaCertificado)
         {
-            X509Certificate2 certEmisor = new X509Certificate2(); // Genera un objeto del tipo de certificado          
+            X509Certificate2 certEmisor = new X509Certificate2(rutaCertificado); // Genera un objeto del tipo de certificado          
 
-            certEmisor.Import(certificado); // Importa los datos del certificado que acabas de leer
 
+
+
+            //certEmisor.Import(certificado); // Importa los datos del certificado que acabas de leer
+
+
+           
             string[] datosCertificado =
             {
                 certEmisor.GetExpirationDateString(), //fecha
@@ -108,7 +113,7 @@ namespace FirmarDocumentos.Services
         //Metodo para guardar la CLAVE PRIVADA
         public async Task GuardarclavePrivadaAsync(IFormFile clavePrivada)
         {
-            string path = Path.Combine(environment.WebRootPath, "Credenciales");
+            string path = Path.Combine(_environment.WebRootPath, "Credenciales");
 
             if (!Directory.Exists(path))
             {

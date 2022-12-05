@@ -13,15 +13,18 @@ namespace FirmarDocumentos.Controllers //Controlador que manejara la entrada de 
 {
     public class FirmaElectronicaController : Controller
     {
-        private readonly IHostingEnvironment environment;
-        private readonly IProcesarPDFService procesarPDFService;
-        private readonly IProcesarCredenciales procesarCredenciales;
+        private readonly IHostingEnvironment _environment;
+        private readonly IProcesarPDFService _procesarPDFService;
+        private readonly IProcesarCredencialesService _procesarCredenciales;
 
-        public FirmaElectronicaController(IHostingEnvironment environment, IProcesarPDFService procesarPDFService, IProcesarCredenciales procesarCredenciales)
+        public FirmaElectronicaController(
+            IHostingEnvironment environment, 
+            IProcesarPDFService procesarPDFService,
+            IProcesarCredencialesService procesarCredenciales)
         {
-            this.environment = environment;                                  
-            this.procesarPDFService = procesarPDFService;
-            this.procesarCredenciales = procesarCredenciales;
+            this._environment = environment;                                  
+            this._procesarPDFService = procesarPDFService;
+            this._procesarCredenciales = procesarCredenciales;
         }
 
         public IActionResult Index()
@@ -35,25 +38,38 @@ namespace FirmarDocumentos.Controllers //Controlador que manejara la entrada de 
         [HttpPost]
         public async Task GuardarArchivo(IFormFile archivo)
         {
-           await procesarPDFService.GuardarArchivoAsync(archivo);
+           await _procesarPDFService.GuardarArchivoAsync(archivo);
         }
 
         
         public async Task GuardarCertificados(IFormFile certificado)
         {
-            await procesarCredenciales.GuardarCertificadosAsync(certificado);
+            await _procesarCredenciales.GuardarCertificadosAsync(certificado);
         }
 
         
 
         public async Task GuardarclavePrivada(IFormFile clavePrivada)
         {
-            await procesarCredenciales.GuardarclavePrivadaAsync(clavePrivada);
+            await _procesarCredenciales.GuardarclavePrivadaAsync(clavePrivada);
         }
 
         public async Task ModificarPdf()
         {
-            await procesarPDFService.ModificarPdf();
+
+            // Se haría una llamada a otro servicio para obtener el certificado
+            // y el documento asociado a un usuario...
+
+
+            //var datosUsuario = await ObtenerDatosUsuario(idUsuario);
+
+            //var rutaCertificado = datosUsuario.RutaCertificado;
+            //var rutaPdf = datosUsuario.RutaPdf;
+
+
+            var rutaCertificado = @"E:\Documents\Documentos personales\FIEL_SAGA990406LI5_20221107122530\saga990406li5.cer";
+            var informacionCertificado = _procesarCredenciales.ObtenerInformacionCertificado(rutaCertificado);
+            await _procesarPDFService.ModificarPdf(informacionCertificado);
         }
         
 

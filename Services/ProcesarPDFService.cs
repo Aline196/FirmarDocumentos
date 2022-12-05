@@ -3,34 +3,39 @@ using System.IO;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
-
+using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using Path = System.IO.Path;
 
 namespace FirmarDocumentos.Services
 {
     //Servicio:Logica de negocio
     public class ProcesarPDFService : IProcesarPDFService
     {
-        private readonly IHostingEnvironment environment;
+        private readonly IHostingEnvironment _environment;
 
-        private string path = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Cuarto Acuerdo.pdf";
-
+        private string path = @"C:\Users\Aline\source\repos\FirmarDocumentos\wwwroot\Archivos\Primer acuerdo.pdf";
+        //private string path = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Primer acuerdo.pdf";
+        //private string path;
         public ProcesarPDFService(IHostingEnvironment environment)
         {
-            this.environment = environment;
+            this._environment = environment;
         }
 
         //Metodo para guardar el pdf
         public async Task GuardarArchivoAsync(IFormFile archivo)
         {
-            path = Path.Combine(environment.WebRootPath, "Archivos"); 
+            path = Path.Combine(_environment.WebRootPath, "Archivos"); 
 
             if (!Directory.Exists(path)) 
             {
+                
                 Directory.CreateDirectory(path);
             }
 
@@ -48,53 +53,41 @@ namespace FirmarDocumentos.Services
        
 
 
-        public async Task ModificarPdf()
+        public async Task ModificarPdf(string [] informacionCertificado)
         {
             //string pathOldFile = Path; //Si se ingresa el archivo no debo de almacenar la ruta, lo que debo de pasar es el archivo directo
-            string pathNewFile = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Cuarto AcuerdoModificado.pdf";
-            string pathOldFile = path;
-
-            PdfReader read = new PdfReader(pathOldFile); //Lee el pdf original
-            Rectangle size = read.GetPageSizeWithRotation(1); //obtiene el tamaño de nuestro pdf
-            Document document = new Document(size);//documento de itextsharp para realizar el trabajo asignandole el tamaño del original
-
-            // Creamos el objeto en el cual haremos la inserción
-            FileStream archivo = new FileStream(pathNewFile, FileMode.Create, FileAccess.ReadWrite);
-            PdfWriter write = PdfWriter.GetInstance(document, archivo);
-
-            document.Open();
-
+            //string pathNewFile = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Cuarto AcuerdoModificado.pdf";
+           
             
 
-            //El contenido del pdf, aqui se hace la escritura del contenido
-            PdfContentByte modificado = write.DirectContent;
+            string file = @"C:\Users\Aline\source\repos\FirmarDocumentos\wwwroot\Archivos\Tercer acuerdo.pdf";
+            string fileModified = @"C:\Users\Aline\source\repos\FirmarDocumentos\wwwroot\Archivos\Tercer acuerdoModificado.pdf";
 
-            //crea una nueva pagina y agrega el pdf original
-            PdfImportedPage nuevaPagina = write.GetImportedPage(read, 1);
-            modificado.AddTemplate(nuevaPagina, 0, 0);
 
-            //Propiedades de nuestra fuente a insertar
-            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            modificado.SetColorFill(BaseColor.RED);
-            modificado.SetFontAndSize(bf, 15);
 
-            //Se abre el flujo para escribir el texto
-            modificado.BeginText();
-            //Se asigna el texto
-            string text = "HOLA SOY TU MODIFICACION";
-            //Agregar los datos que se optienen de el certificado en una variable text
 
-            // Le damos posición y rotación al texto
-            // la posición de Y es al revés de como estamos acostumbrados
-            modificado.ShowTextAligned(1, text, 30, size.Height-30, 0);
-            modificado.EndText();
+            // Read pdf and add new page
+            PdfDocument pdfDocument = new PdfDocument(
+                new PdfReader(file),
+                new PdfWriter(fileModified));
+           
 
-            
+            // Add text to new page
+            Document document = new Document(pdfDocument, pdfDocument.GetDefaultPageSize());
 
+            document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+
+            document.Add(new Paragraph($"Fecha de expiración: {informacionCertificado[0]}"));
+
+
+            document.Add(new Paragraph($"Número de serie: {informacionCertificado[1]}"));
+            document.Add(new Paragraph($"Clave pública: {informacionCertificado[2]}"));
+            document.Add(new Paragraph($"Nombre del propietario: {informacionCertificado[3]}"));
+            document.Add(new Paragraph($"Emisor: {informacionCertificado[4]}"));
+            document.Add(new Paragraph($"Sujeto: {informacionCertificado[5]}"));
+            document.Add(new Paragraph($"RFC: {informacionCertificado[6]}"));
             document.Close();
-            archivo.Close();
-            write.Close();
-            read.Close();
+            pdfDocument.Close();
 
         }
 

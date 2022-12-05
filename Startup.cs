@@ -25,7 +25,7 @@ namespace FirmarDocumentos
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProcesarPDFService, ProcesarPDFService>();
-            services.AddScoped<IProcesarCredenciales,ProcesarCredencialesService>();
+            services.AddScoped<IProcesarCredencialesService,ProcesarCredencialesService>();
             //services.AddScoped<IProcesarPDFService>();
             services.AddControllersWithViews();
         }
