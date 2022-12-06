@@ -40,7 +40,6 @@ namespace FirmarDocumentos.Services
                 Directory.CreateDirectory(path);
             }
 
-
             string fileName = Path.GetFileName(archivo.FileName); 
             using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
             {
@@ -54,7 +53,7 @@ namespace FirmarDocumentos.Services
        
 
 
-        public async Task ModificarPdf(string [] informacionCertificado)
+        public async Task ModificarPdf(string [] informacionCertificado, byte[] empaquetarClaves)
         {
            
             //string file = @"C:\Users\Aline\source\repos\FirmarDocumentos\wwwroot\Archivos\Tercer acuerdo.pdf";
@@ -64,19 +63,14 @@ namespace FirmarDocumentos.Services
             string file = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Tercer acuerdo.pdf";
             string fileModified = @"C:\Users\megonzalez\source\repos\FirmarDocumentos\wwwroot\Archivos\Tercer Acuerdo-Modificado.pdf";
 
-
-
             // Read pdf 
             PdfDocument pdfDocument = new PdfDocument(
                 new PdfReader(file),
                 new PdfWriter(fileModified));
            
-
             // Add text to new page
             Document document = new Document(pdfDocument, pdfDocument.GetDefaultPageSize());
             document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-
-            //document.Add(new Paragraph($"e.Firma: e.Firma"));
 
             //document.Add(new Paragraph($"Fecha de expiración: {informacionCertificado[0]}"));
             //document.Add(new Paragraph($"Número de serie: {informacionCertificado[1]}"));
@@ -92,19 +86,7 @@ namespace FirmarDocumentos.Services
             document.Add(new Paragraph($"Firmante: {informacionCertificado[2]}"));
             document.Add(new Paragraph($"RFC: {informacionCertificado[3]}"));
 
-            //Proceso de firmado en el pdf
-            //PdfSigner firma = new PdfSigner(pdfDocument);
-
-            //PdfSignatureAppearance appearance = firma.GetSignatureAppearance();
-            //appearance.SetReason("My reason to sign...")
-            //    .SetLocation("Lahore")
-            //    .SetPageRect(new Rectangle(36, 648, 200, 100))
-            //    .SetPageNumber(1);
-            //firma.SetFieldName("MyFieldName");
-
-
-
-
+           
             document.Close();
             pdfDocument.Close();
 

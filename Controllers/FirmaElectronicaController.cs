@@ -56,24 +56,27 @@ namespace FirmarDocumentos.Controllers //Controlador que manejara la entrada de 
 
         public async Task ModificarPdf()
         {
-
             // Se haría una llamada a otro servicio para obtener el certificado
             // y el documento asociado a un usuario...
-
-
             //var datosUsuario = await ObtenerDatosUsuario(idUsuario);
-
             //var rutaCertificado = datosUsuario.RutaCertificado;
             //var rutaPdf = datosUsuario.RutaPdf;
 
 
             //var rutaCertificado = @"E:\Documents\Documentos personales\FIEL_SAGA990406LI5_20221107122530\saga990406li5.cer";
             var rutaCertificado = @"C:\Users\megonzalez\Documents\Desarollo SAT\2 FIEL_GUPH751126M88_20220301120726\2 FIEL_GUPH751126M88_20220301120726\guph751126m88.cer";
-            var informacionCertificado = _procesarCredenciales.ObtenerInformacionCertificado(rutaCertificado);
-            await _procesarPDFService.ModificarPdf(informacionCertificado);
-        }
-        
+            var rutaClavePrivada = @"C:\Users\megonzalez\Documents\Desarollo SAT\2 FIEL_GUPH751126M88_20220301120726\2 FIEL_GUPH751126M88_20220301120726\Claveprivada_FIEL_GUPH751126M88_20220301_120726.key";
 
-       
+            var empaquetarClaves = _procesarCredenciales.EmpacarClaves(rutaCertificado, rutaClavePrivada);
+
+            var informacionCertificado = _procesarCredenciales.ObtenerInformacionCertificado(rutaCertificado);
+            await _procesarPDFService.ModificarPdf(informacionCertificado, empaquetarClaves);
+
+        }
+
+
+
+
+
     }
 }
